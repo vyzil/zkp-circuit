@@ -27,8 +27,7 @@ else
 fi
 
 # Step 2: Get constraint count
-MEM_MB=$(free -m | awk '/^Mem:/ {print $2}')
-HEAP_MB=$((MEM_MB / 2))
+HEAP_MB=49152 # 48GB
 NODE_CMD="node --max-old-space-size=${HEAP_MB} $(which snarkjs)"
 
 echo "[2] Reading R1CS info using heap ${HEAP_MB} MB"
@@ -58,7 +57,7 @@ if [ ! -f "$PTAU_FINAL" ]; then
     $NODE_CMD powersoftau new bls12381 $k "$PTAU_INIT" -v
     $NODE_CMD powersoftau contribute "$PTAU_INIT" "$PTAU_FINAL" --name="auto" <<< $ENTROPY
 else
-    echo "[3] PTAU already exists: $PTAU_PREPARED"
+    echo "[3] PTAU already exists: $PTAU_FINAL"
 fi
 
 # Step 5: Prepare ptau for phase2
